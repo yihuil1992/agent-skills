@@ -26,13 +26,21 @@ Use the agent's normal "publish PR" workflow first when the user still needs loc
    - If the local checked-out branch is the PR branch, ensure local `HEAD` equals `headRefOid`; otherwise ask whether to push/reconcile first.
 
 3. Wait for CI.
-   - Prefer the bundled script from this skill directory:
+   - Prefer the bundled script from this skill directory.
+   - Windows PowerShell:
      ```powershell
      & .\scripts\land-pr.ps1 -Yes
      ```
+   - macOS / Linux:
+     ```bash
+     ./scripts/land-pr.sh --yes
+     ```
    - Use `-Pr 123` or `-Pr https://github.com/OWNER/REPO/pull/123` when landing a PR that is not the current branch.
+   - In Bash, use `--pr 123` or `--pr https://github.com/OWNER/REPO/pull/123`.
    - Use `-MergeMethod merge`, `-MergeMethod squash`, or `-MergeMethod rebase` when the user specifies a merge strategy. Default to `squash`.
+   - In Bash, use `--merge-method merge`, `--merge-method squash`, or `--merge-method rebase`.
    - Use `-RequiredOnly` when the user only wants required checks to gate the merge.
+   - In Bash, use `--required-only`.
 
 4. Merge and clean up.
    - The script first unstages ignored files, then merges with `gh pr merge --<method> --delete-branch`, checks out the PR base branch, pulls with `git pull --ff-only origin <base>`, and deletes the matching local PR branch only when it matches the PR head SHA.

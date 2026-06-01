@@ -15,18 +15,36 @@ This repository stores skill folders that can be copied into agent-specific skil
 
 Copy one skill folder into your agent's skill directory.
 
-### Codex
+### Windows PowerShell
+
+Codex:
 
 ```powershell
 .\scripts\install-skill.ps1 -Skill spec-driven-workflow -Target codex
 .\scripts\install-skill.ps1 -Skill pr-land -Target codex
 ```
 
-### Claude Code
+Claude Code:
 
 ```powershell
 .\scripts\install-skill.ps1 -Skill spec-driven-workflow -Target claude
 .\scripts\install-skill.ps1 -Skill pr-land -Target claude
+```
+
+### macOS / Linux
+
+Codex:
+
+```bash
+./scripts/install-skill.sh --skill spec-driven-workflow --target codex
+./scripts/install-skill.sh --skill pr-land --target codex
+```
+
+Claude Code:
+
+```bash
+./scripts/install-skill.sh --skill spec-driven-workflow --target claude
+./scripts/install-skill.sh --skill pr-land --target claude
 ```
 
 You can also copy manually:
@@ -40,13 +58,20 @@ Agent-specific metadata such as `agents/openai.yaml` is harmless for agents that
 
 ## Validate
 
+Windows PowerShell:
+
 ```powershell
 .\scripts\validate-skills.ps1
 ```
 
-Validation checks frontmatter, required files, obvious placeholder text, and PowerShell script syntax.
+macOS / Linux:
+
+```bash
+./scripts/validate-skills.sh
+```
+
+Validation checks frontmatter, required files, obvious placeholder text, and bundled script syntax.
 
 ## Compatibility
 
 See [docs/compatibility.md](docs/compatibility.md).
-

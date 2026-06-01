@@ -42,6 +42,6 @@ Other agents can use the same folders if they support a `SKILL.md`-style instruc
 - Keep `SKILL.md` platform-neutral.
 - Keep agent-specific metadata optional.
 - Avoid absolute user paths.
+- Provide PowerShell and Bash entrypoints when automation is expected on Windows, macOS, and Linux.
 - Prefer scripts that run from the skill directory or accept explicit paths.
 - Document external CLI dependencies inside the skill.
-
