@@ -2,7 +2,7 @@
 
 Portable skills for AI coding agents.
 
-This repository stores skill folders that can be copied into agent-specific skill directories such as Codex skills or Claude Code skills. Each skill is self-contained and starts with a `SKILL.md` file. Optional support files live next to it under folders such as `references/`, `scripts/`, and `agents/`.
+This repo publishes self-contained `SKILL.md` folders that can be installed into Codex, Claude Code, GitHub Copilot agent skills, and other harnesses that understand the Agent Skills layout.
 
 ## Skills
 
@@ -11,62 +11,99 @@ This repository stores skill folders that can be copied into agent-specific skil
 | `spec-driven-workflow` | Clarify fuzzy requests, draft and self-review a bounded spec, implement, verify, and preserve local project memory. |
 | `pr-land` | Wait for CI, gate on PR readiness, merge a GitHub PR, delete branches, and return to the base branch. |
 
-## Install
+## Install From GitHub
 
-Copy one skill folder into your agent's skill directory.
-
-### Windows PowerShell
-
-Codex:
-
-```powershell
-.\scripts\install-skill.ps1 -Skill spec-driven-workflow -Target codex
-.\scripts\install-skill.ps1 -Skill pr-land -Target codex
-```
-
-Claude Code:
-
-```powershell
-.\scripts\install-skill.ps1 -Skill spec-driven-workflow -Target claude
-.\scripts\install-skill.ps1 -Skill pr-land -Target claude
-```
-
-### macOS / Linux
-
-Codex:
+If your environment supports the `skills` CLI:
 
 ```bash
-./scripts/install-skill.sh --skill spec-driven-workflow --target codex
-./scripts/install-skill.sh --skill pr-land --target codex
+npx skills add https://github.com/yihuil1992/agent-skills --skill spec-driven-workflow
+npx skills add https://github.com/yihuil1992/agent-skills --skill pr-land
 ```
 
-Claude Code:
+You can also install from this repository manually. The `dist/` directory contains ready-to-copy layouts for common harnesses.
+
+### Codex / Generic Agents
+
+Project-local:
 
 ```bash
-./scripts/install-skill.sh --skill spec-driven-workflow --target claude
-./scripts/install-skill.sh --skill pr-land --target claude
+cp -R dist/agents/.agents your-project/
 ```
 
-You can also copy manually:
+User-wide:
 
-```text
-skills/<skill-name>/ -> ~/.codex/skills/<skill-name>/
-skills/<skill-name>/ -> ~/.claude/skills/<skill-name>/
+```bash
+mkdir -p ~/.agents/skills
+cp -R dist/agents/.agents/skills/* ~/.agents/skills/
 ```
 
-Agent-specific metadata such as `agents/openai.yaml` is harmless for agents that ignore it.
+### Claude Code
 
-## Validate
+Project-local:
+
+```bash
+cp -R dist/claude/.claude your-project/
+```
+
+User-wide:
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R dist/claude/.claude/skills/* ~/.claude/skills/
+```
+
+### GitHub Copilot Agent Skills
+
+Project-local:
+
+```bash
+cp -R dist/github/.github your-project/
+```
+
+## Install With Scripts
 
 Windows PowerShell:
 
 ```powershell
+.\scripts\install-skill.ps1 -Skill spec-driven-workflow -Target codex
+.\scripts\install-skill.ps1 -Skill pr-land -Target codex
+.\scripts\install-skill.ps1 -Skill spec-driven-workflow -Target claude
+.\scripts\install-skill.ps1 -Skill pr-land -Target claude
+```
+
+macOS / Linux:
+
+```bash
+./scripts/install-skill.sh --skill spec-driven-workflow --target codex
+./scripts/install-skill.sh --skill pr-land --target codex
+./scripts/install-skill.sh --skill spec-driven-workflow --target claude
+./scripts/install-skill.sh --skill pr-land --target claude
+```
+
+## Repository Layout
+
+```text
+skills/    source of truth for each skill
+dist/      generated provider layouts for direct copying
+scripts/   install, build, and validation helpers
+docs/      compatibility notes
+```
+
+Author changes in `skills/`, then rebuild `dist/`.
+
+## Build And Validate
+
+Windows PowerShell:
+
+```powershell
+.\scripts\build-dist.ps1
 .\scripts\validate-skills.ps1
 ```
 
 macOS / Linux:
 
 ```bash
+./scripts/build-dist.sh
 ./scripts/validate-skills.sh
 ```
 
@@ -75,3 +112,4 @@ Validation checks frontmatter, required files, obvious placeholder text, and bun
 ## Compatibility
 
 See [docs/compatibility.md](docs/compatibility.md).
+

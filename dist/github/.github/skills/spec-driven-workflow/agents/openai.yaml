@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec-Driven Workflow"
+  short_description: "Clarify, spec, self-review, run, remember"
+  default_prompt: "Use $spec-driven-workflow to clarify my request, converge a spec, implement it, verify it, and update local project memory."

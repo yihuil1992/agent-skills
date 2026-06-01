@@ -1,18 +1,24 @@
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$skillsRoot = Join-Path $repoRoot "skills"
+$skillRoots = @(
+    (Join-Path $repoRoot "skills"),
+    (Join-Path $repoRoot "dist\agents\.agents\skills"),
+    (Join-Path $repoRoot "dist\claude\.claude\skills"),
+    (Join-Path $repoRoot "dist\github\.github\skills")
+)
 
-if (-not (Test-Path $skillsRoot)) {
-    throw "Missing skills directory: $skillsRoot"
-}
+foreach ($skillsRoot in $skillRoots) {
+    if (-not (Test-Path $skillsRoot)) {
+        throw "Missing skills directory: $skillsRoot. Run scripts/build-dist first."
+    }
 
-$skillDirs = Get-ChildItem -Directory $skillsRoot
-if ($skillDirs.Count -eq 0) {
-    throw "No skill directories found."
-}
+    $skillDirs = Get-ChildItem -Directory $skillsRoot
+    if ($skillDirs.Count -eq 0) {
+        throw "No skill directories found in $skillsRoot."
+    }
 
-foreach ($skillDir in $skillDirs) {
+    foreach ($skillDir in $skillDirs) {
     $skillMd = Join-Path $skillDir.FullName "SKILL.md"
     if (-not (Test-Path $skillMd)) {
         throw "Missing SKILL.md in $($skillDir.Name)"
@@ -43,8 +49,8 @@ foreach ($skillDir in $skillDirs) {
         }
     }
 
-    Write-Host "Valid: $($skillDir.Name)"
+        Write-Host "Valid: $($skillDir.Name) [$skillsRoot]"
+    }
 }
 
 Write-Host "All skills valid."
-
