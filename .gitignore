@@ -1,0 +1,7 @@
+.agent-session/
+.codex-session/
+*.log
+__pycache__/
+.DS_Store
+Thumbs.db
+
