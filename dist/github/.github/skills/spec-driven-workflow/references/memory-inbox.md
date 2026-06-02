@@ -102,7 +102,7 @@ Unchecked items are background only; do not force them into the current task.
 
 ## End Of Run
 
-After execution summary, classify unresolved notes:
+After execution summary and before the final response, classify unresolved notes:
 
 - promoted to SYSTEM_MAP/ADR/AGENT
 - added to memory inbox
@@ -110,6 +110,14 @@ After execution summary, classify unresolved notes:
 - discarded as one-off
 
 Do not dump every thought into the inbox. Add only items with plausible future value.
+
+This end-of-run review is required even when no inbox exists yet. If no inbox exists and no secondary memory exists, report:
+
+```text
+Memory handling: none - no secondary memory to preserve
+```
+
+If an inbox should exist but is missing, create it only when there is a secondary note worth preserving or the local workflow already expects an inbox. Otherwise do not create an empty file just for ceremony.
 
 ## Cleanup
 

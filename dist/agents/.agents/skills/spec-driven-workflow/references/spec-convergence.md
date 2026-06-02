@@ -165,5 +165,29 @@ After implementation:
 - record deviations
 - rename spec to `.done.md` only when local workflow says completion is ready
 
-Final user response should be an acceptance packet, not a process dump.
+## Verification And Memory Gate
 
+This gate is non-optional. Complete it immediately before the final response, even for small tasks and even when there is no memory to add.
+
+Checklist:
+
+- Verification run, or explicitly skipped with reason.
+- Spec execution summary filled, or no spec existed.
+- SYSTEM_MAP reviewed for durable architecture, command, route, state, permission, or module-responsibility updates.
+- ADR reviewed for durable decisions that future agents may accidentally reverse.
+- AGENT(S) reviewed for operating rules or workflow instructions.
+- Memory inbox reviewed for secondary notes that are useful but not authoritative.
+- Final response includes a `Memory handling:` line.
+
+Allowed `Memory handling:` values:
+
+```text
+Memory handling: promoted to SYSTEM_MAP/ADR/AGENT(S) - <path or summary>
+Memory handling: added to inbox - <path or summary>
+Memory handling: none - no durable or secondary memory from this run
+Memory handling: deferred - <reason or user decision needed>
+```
+
+If memory was added, mention the file path. If memory was not added, say why. This explicit line is the visible closeout check that prevents memory work from being skipped.
+
+Final user response should be an acceptance packet, not a process dump.

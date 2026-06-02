@@ -15,6 +15,7 @@ Use this skill to run a complete local engineering loop:
 4. Get user approval only when the local workflow or risk requires it.
 5. Implement with the current agent by default.
 6. Verify, summarize, and promote durable memory to the right local document.
+7. Pass the final Verification And Memory Gate before responding.
 
 Do not involve another model, tool, or cross-agent handoff unless the user explicitly asks. The normal experience should be: clarify once, then run autonomously until the work is ready for user acceptance.
 
@@ -88,4 +89,12 @@ After implementation:
 - Promote durable information into SYSTEM_MAP, ADR, or AGENT(S) when it belongs there.
 - Put secondary unresolved memory into a local checklist inbox. Read [memory-inbox.md](references/memory-inbox.md).
 
-Final response to the user should be an acceptance packet: what changed, verification run, open risks, docs/memory updates, and where to review the result.
+Before the final response, complete the non-optional Verification And Memory Gate:
+
+- verification run or explicitly skipped with reason
+- spec execution summary filled, or no spec existed
+- SYSTEM_MAP/ADR/AGENT(S) reviewed for durable updates
+- memory inbox reviewed for secondary notes
+- final response ready
+
+The final response must include a `Memory handling:` line with one of: `promoted`, `added to inbox`, `none`, or `deferred`, plus the destination or reason. Final response to the user should be an acceptance packet: what changed, verification run, open risks, docs/memory updates, and where to review the result.
