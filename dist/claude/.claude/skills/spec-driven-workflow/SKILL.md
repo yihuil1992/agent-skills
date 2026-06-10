@@ -30,7 +30,7 @@ At the start of the response, state:
 - `Mode: spec-driven-workflow`
 - `Workflow strictness: strict` or `Workflow strictness: lightweight`
 
-Default to `strict` when the request is complex or fuzzy, asks for implementation, mentions repository workflow docs, or expects the agent to run until acceptance. In strict mode, run bootstrap detection, bounded brainstorm when needed, spec convergence when needed, same-agent execution by default, verification, and the Verification And Memory Gate.
+Default to `strict` when the request is complex or fuzzy, asks for implementation, mentions repository workflow docs, or expects the agent to run until acceptance. In strict mode, run bootstrap detection, the Brainstorm Gate, spec convergence when needed, same-agent execution by default, verification, and the Verification And Memory Gate.
 
 Use `lightweight` only when the user explicitly asks for a quick/direct answer, says not to write a spec, asks only a question about the skill, or the task is clearly trivial. If any phase is skipped, say which phase was skipped and why.
 
@@ -52,7 +52,19 @@ Never fail only because those files are absent. Use bootstrap or temporary mode.
 
 ### 1. Bounded Brainstorm
 
-Before writing a spec for a fuzzy request, run bounded clarification. Read [bounded-brainstorm.md](references/bounded-brainstorm.md).
+Before writing a spec in strict mode, complete the Brainstorm Gate. Read [bounded-brainstorm.md](references/bounded-brainstorm.md).
+
+The Brainstorm Gate is non-optional in strict mode. Existing docs, tickets, or project briefs may reduce the number of questions to zero, but they do not remove the need to state the gate result.
+
+At the start of this phase, write one of:
+
+- `Brainstorm Gate: running bounded brainstorm`
+- `Brainstorm Gate: no user questions needed; proceeding with stated assumptions`
+- `Brainstorm Gate: skipped because <explicit user opt-out or trivial task>`
+
+Only use the no-question path when the available input already covers goal, target user or workflow, constraints, acceptance shape, likely non-goals, and high-risk unknowns. Then list the working assumptions before drafting the spec.
+
+Only skip the gate when the user explicitly asks not to brainstorm, explicitly asks for a quick/direct answer, or the task is clearly trivial. If skipped, say why.
 
 Default limits:
 

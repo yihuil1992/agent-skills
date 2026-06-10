@@ -2,6 +2,8 @@
 
 Use this before drafting a spec for complex, fuzzy, or hard-to-verbalize requirements.
 
+In strict spec-driven mode, this is a gate, not just a helpful phase. The agent must either ask bounded questions, explicitly proceed with stated assumptions because the input is already sufficient, or explicitly skip because the user opted out or the task is trivial. Do not silently treat existing docs, tickets, or briefs as enough.
+
 ## Goal
 
 Help the user make the few decisions that actually shape the work, without turning discovery into an endless questionnaire. The desired user experience is:
@@ -119,4 +121,3 @@ If a Blocking decision remains, mark the task blocked instead of guessing.
 ## During Later Review
 
 Spec review may discover new uncertainty. Do not reopen brainstorming unless the uncertainty is Blocking or changes the target, data model, permission/security posture, or user-visible workflow. Otherwise choose a conservative default and write it into the spec.
-
