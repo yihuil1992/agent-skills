@@ -19,6 +19,21 @@ Use this skill to run a complete local engineering loop:
 
 Do not involve another model, tool, or cross-agent handoff unless the user explicitly asks. The normal experience should be: clarify once, then run autonomously until the work is ready for user acceptance.
 
+## Invocation Contract
+
+When this skill is invoked by name or tag, treat that as an explicit request to run this workflow. The user does not need to also say "strictly follow the process".
+
+Invocation examples include `@Spec-Driven Workflow`, `$spec-driven-workflow`, `Spec Driven Workflow`, `Spec Driven Develop`, `走 spec 流程`, `先 brainstorm`, and `先写 spec`.
+
+At the start of the response, state:
+
+- `Mode: spec-driven-workflow`
+- `Workflow strictness: strict` or `Workflow strictness: lightweight`
+
+Default to `strict` when the request is complex or fuzzy, asks for implementation, mentions repository workflow docs, or expects the agent to run until acceptance. In strict mode, run bootstrap detection, bounded brainstorm when needed, spec convergence when needed, same-agent execution by default, verification, and the Verification And Memory Gate.
+
+Use `lightweight` only when the user explicitly asks for a quick/direct answer, says not to write a spec, asks only a question about the skill, or the task is clearly trivial. If any phase is skipped, say which phase was skipped and why.
+
 ## Workflow
 
 ### 0. Bootstrap Detection
