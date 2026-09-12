@@ -1,4 +1,4 @@
 interface:
   display_name: "PR Land"
-  short_description: "Merge green PRs and clean up branches"
-  default_prompt: "Use $pr-land to wait for CI, merge the current PR, delete its branch, return to main, and pull latest."
+  short_description: "Merge ready PRs and clean up branches"
+  default_prompt: "Use $pr-land to wait for CI when present, allow PRs with no reported checks, merge the current PR, delete its branch, return to main, and pull latest."

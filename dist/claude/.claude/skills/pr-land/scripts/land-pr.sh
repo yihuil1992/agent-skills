@@ -147,6 +147,10 @@ wait_for_checks() {
     local exit_code=$?
     set -e
     if [[ "$exit_code" -ne 0 && "$exit_code" -ne 8 ]]; then
+      if printf '%s' "$raw" | grep -Eiq '\bno\b.*\b(checks?|status checks?|check runs?)\b|\bchecks?\b.*\bnot found\b'; then
+        echo "No CI checks reported for PR $selector."
+        return 0
+      fi
       echo "$raw" >&2
       exit "$exit_code"
     fi

@@ -7,7 +7,7 @@ description: "Land GitHub pull requests after they are ready. Use when an AI cod
 
 ## Overview
 
-Land a ready GitHub PR with guardrails: resolve the current PR, wait for checks, block on draft/requested-changes states, merge, clean up the branch, then return to the base branch and fast-forward pull.
+Land a ready GitHub PR with guardrails: resolve the current PR, wait for checks when the repository reports them, block on draft/requested-changes states, merge, clean up the branch, then return to the base branch and fast-forward pull.
 
 Use the agent's normal "publish PR" workflow first when the user still needs local changes committed, pushed, or a PR opened. Use this skill after a PR exists.
 
@@ -25,7 +25,7 @@ Use the agent's normal "publish PR" workflow first when the user still needs loc
    - Stop if `reviewDecision` is `REVIEW_REQUIRED` unless the user explicitly wants to try merging anyway.
    - If the local checked-out branch is the PR branch, ensure local `HEAD` equals `headRefOid`; otherwise ask whether to push/reconcile first.
 
-3. Wait for CI.
+3. Wait for CI when present.
    - Prefer the bundled script from this skill directory.
    - Windows PowerShell:
      ```powershell
@@ -41,20 +41,21 @@ Use the agent's normal "publish PR" workflow first when the user still needs loc
    - In Bash, use `--merge-method merge`, `--merge-method squash`, or `--merge-method rebase`.
    - Use `-RequiredOnly` when the user only wants required checks to gate the merge.
    - In Bash, use `--required-only`.
+   - A repository or PR with no reported checks is not a failure by itself. Continue after reporting that no CI checks were found.
 
 4. Merge and clean up.
    - The script first unstages ignored files, then merges with `gh pr merge --<method> --delete-branch`, checks out the PR base branch, pulls with `git pull --ff-only origin <base>`, and deletes the matching local PR branch only when it matches the PR head SHA.
    - If the script cannot safely delete the local branch, report the reason and leave it in place.
 
 5. Finish with the concrete result.
-   - Include PR number/title, merge method, final branch, whether remote/local branch cleanup happened, and whether `git pull --ff-only` succeeded.
+   - Include PR number/title, merge method, final branch, whether checks passed or were absent, whether remote/local branch cleanup happened, and whether `git pull --ff-only` succeeded.
 
 ## Manual Fallback
 
 Use this sequence when the script is unavailable or needs adaptation:
 
 ```powershell
-gh pr checks --watch --fail-fast --interval 30
+gh pr checks --watch --fail-fast --interval 30  # If this reports no checks configured, continue instead of failing.
 gh pr view --json number,title,url,headRefName,headRefOid,baseRefName,isDraft,reviewDecision,mergeStateStatus
 gh pr merge <number> --squash --delete-branch
 git checkout <baseRefName>

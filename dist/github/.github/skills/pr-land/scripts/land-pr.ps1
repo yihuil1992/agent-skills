@@ -106,7 +106,16 @@ function Wait-ForChecks {
             $args += "--required"
         }
 
-        $raw = Invoke-Captured "gh" $args @(0, 8)
+        $rawOutput = & gh @args 2>&1
+        $exitCode = $LASTEXITCODE
+        $raw = (($rawOutput | Out-String).Trim())
+        if ($exitCode -ne 0 -and $exitCode -ne 8) {
+            if ($raw -match "(?i)\bno\b.*\b(checks?|status checks?|check runs?)\b|\bchecks?\b.*\bnot found\b") {
+                Write-Host "No CI checks reported for PR $Selector."
+                return
+            }
+            throw "Command failed with exit code ${exitCode}: gh $($args -join ' ')`n$raw"
+        }
         if ([string]::IsNullOrWhiteSpace($raw)) {
             Write-Host "No CI checks reported for PR $Selector."
             return
